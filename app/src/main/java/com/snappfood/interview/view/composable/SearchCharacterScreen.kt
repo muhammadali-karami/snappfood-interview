@@ -13,7 +13,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.snappfood.interview.data.api.ApiResult
 import com.snappfood.interview.data.model.CharacterDetail
 import com.snappfood.interview.viewmodel.SearchCharacterViewModel
-import kotlinx.coroutines.delay
 
 @Composable
 fun SearchCharacterScreen(
@@ -34,15 +32,7 @@ fun SearchCharacterScreen(
     onCharacterSelected: (CharacterDetail) -> Unit
 ) {
     var query by rememberSaveable { mutableStateOf("") }
-//    var debounceQuery by rememberSaveable { mutableStateOf("") }
     val charactersState by viewModel.characters.collectAsState()
-
-//    LaunchedEffect(query) {
-//        delay(300)
-//        if (query == debounceQuery) {
-//            viewModel.searchCharacterWithDebounce(query)
-//        }
-//    }
 
     Column(
         modifier = Modifier
