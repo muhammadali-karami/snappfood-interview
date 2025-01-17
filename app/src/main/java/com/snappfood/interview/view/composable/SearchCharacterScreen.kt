@@ -23,15 +23,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.snappfood.interview.data.model.CharacterDetailResponse
+import com.snappfood.interview.data.model.CharacterDetail
 import com.snappfood.interview.data.api.ApiResult
-import com.snappfood.interview.viewmodel.CharacterViewModel
+import com.snappfood.interview.viewmodel.SearchCharacterViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun SearchScreen(
-    viewModel: CharacterViewModel,
-    onCharacterSelected: (CharacterDetailResponse) -> Unit
+    viewModel: SearchCharacterViewModel,
+    onCharacterSelected: (CharacterDetail) -> Unit
 ) {
     var query by remember { mutableStateOf("") }
     var debounceQuery by remember { mutableStateOf("") }
@@ -40,7 +40,7 @@ fun SearchScreen(
     LaunchedEffect(query) {
         delay(300)
         if (query == debounceQuery) {
-            viewModel.searchCharacters(query)
+            viewModel.searchCharacter(query)
         }
     }
 
@@ -50,6 +50,7 @@ fun SearchScreen(
             .padding(16.dp), verticalArrangement = Arrangement.Center
     ) {
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,16 +65,18 @@ fun SearchScreen(
                 label = { Text("Search your character") }
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         when (charactersState) {
             is ApiResult.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             }
 
             is ApiResult.Success -> {
-                val characterDetailResponses =
-                    (charactersState as ApiResult.Success<List<CharacterDetailResponse>>).data
-                if (characterDetailResponses.isEmpty()) {
+                val characterList =
+                    (charactersState as ApiResult.Success<List<CharacterDetail>>).data
+                if (characterList.isEmpty()) {
                     Text(
                         text = "No characters found. Try searching!",
                         modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -81,7 +84,7 @@ fun SearchScreen(
                     )
                 } else {
                     LazyColumn {
-                        items(characterDetailResponses) { character ->
+                        items(characterList) { character ->
                             CharacterRow(character, onCharacterSelected)
                         }
                     }
@@ -92,6 +95,9 @@ fun SearchScreen(
                 val errorMessage = (charactersState as ApiResult.Error).message
                 Text("Error: $errorMessage", color = Color.Red, modifier = Modifier.padding(16.dp))
             }
+
+            ApiResult.Empty -> // nothing to do
+                Unit
         }
     }
 }

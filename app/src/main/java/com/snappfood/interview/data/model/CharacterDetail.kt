@@ -1,6 +1,6 @@
 package com.snappfood.interview.data.model
 
-data class CharacterDetailResponse(
+data class CharacterDetail(
     val name: String,
     val height: String,
     val mass: String,
