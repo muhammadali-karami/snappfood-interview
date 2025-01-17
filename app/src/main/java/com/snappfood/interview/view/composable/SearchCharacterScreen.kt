@@ -28,8 +28,7 @@ import com.snappfood.interview.viewmodel.SearchCharacterViewModel
 
 @Composable
 fun SearchCharacterScreen(
-    viewModel: SearchCharacterViewModel,
-    onCharacterSelected: (CharacterDetail) -> Unit
+    viewModel: SearchCharacterViewModel, onCharacterSelected: (CharacterDetail) -> Unit
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val charactersState by viewModel.characters.collectAsState()
@@ -37,23 +36,19 @@ fun SearchCharacterScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp), verticalArrangement = Arrangement.Center
+            .padding(16.dp)
+            .padding(top = 16.dp),
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 16.dp)
         ) {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = query,
-                onValueChange = {
-                    query = it
-                    viewModel.searchCharacterWithDebounce(it)
-                },
-                label = { Text("Search your character") }
-            )
+            TextField(modifier = Modifier.fillMaxWidth(), value = query, onValueChange = {
+                query = it
+                viewModel.searchCharacterWithDebounce(it)
+            }, label = { Text("Search your character") })
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -83,7 +78,7 @@ fun SearchCharacterScreen(
 
             is ApiResult.Error -> {
                 val errorMessage = (charactersState as ApiResult.Error).message
-                Text("Error: $errorMessage", color = Color.Red, modifier = Modifier.padding(16.dp))
+                Text("Error: $errorMessage", color = Color.Red)
             }
 
             ApiResult.Empty -> Unit
