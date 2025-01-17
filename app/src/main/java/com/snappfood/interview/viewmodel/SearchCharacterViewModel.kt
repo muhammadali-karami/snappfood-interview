@@ -2,11 +2,12 @@ package com.snappfood.interview.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.snappfood.interview.data.api.ApiResult
 import com.snappfood.interview.data.model.CharacterDetail
 import com.snappfood.interview.data.repository.CharacterRepository
-import com.snappfood.interview.data.api.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,9 +21,20 @@ class SearchCharacterViewModel @Inject constructor(private val repository: Chara
 
     private var searchJob: Job? = null
 
-    fun searchCharacter(query: String) {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
+    fun searchCharacterWithDebounce(query: String) {
+        searchJob?.cancel() // Cancel the previous job (to improve performance)
+        if (query.isEmpty()) {
+            _characters.value = ApiResult.Empty
+        } else {
+            searchJob = viewModelScope.launch {
+                delay(300)
+                searchCharacter(query)
+            }
+        }
+    }
+
+    private fun searchCharacter(query: String) {
+        viewModelScope.launch {
             _characters.value = ApiResult.Loading
             _characters.value = repository.searchCharacter(query)
         }

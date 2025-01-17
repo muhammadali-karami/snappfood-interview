@@ -17,32 +17,32 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.snappfood.interview.data.model.CharacterDetail
 import com.snappfood.interview.data.api.ApiResult
+import com.snappfood.interview.data.model.CharacterDetail
 import com.snappfood.interview.viewmodel.SearchCharacterViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SearchScreen(
+fun SearchCharacterScreen(
     viewModel: SearchCharacterViewModel,
     onCharacterSelected: (CharacterDetail) -> Unit
 ) {
-    var query by remember { mutableStateOf("") }
-    var debounceQuery by remember { mutableStateOf("") }
+    var query by rememberSaveable { mutableStateOf("") }
+//    var debounceQuery by rememberSaveable { mutableStateOf("") }
     val charactersState by viewModel.characters.collectAsState()
 
-    LaunchedEffect(query) {
-        delay(300)
-        if (query == debounceQuery) {
-            viewModel.searchCharacter(query)
-        }
-    }
+//    LaunchedEffect(query) {
+//        delay(300)
+//        if (query == debounceQuery) {
+//            viewModel.searchCharacterWithDebounce(query)
+//        }
+//    }
 
     Column(
         modifier = Modifier
@@ -60,7 +60,7 @@ fun SearchScreen(
                 value = query,
                 onValueChange = {
                     query = it
-                    debounceQuery = it
+                    viewModel.searchCharacterWithDebounce(it)
                 },
                 label = { Text("Search your character") }
             )
@@ -96,8 +96,7 @@ fun SearchScreen(
                 Text("Error: $errorMessage", color = Color.Red, modifier = Modifier.padding(16.dp))
             }
 
-            ApiResult.Empty -> // nothing to do
-                Unit
+            ApiResult.Empty -> Unit
         }
     }
 }

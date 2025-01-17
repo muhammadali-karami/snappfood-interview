@@ -5,7 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.snappfood.interview.view.composable.SearchScreen
+import com.snappfood.interview.view.composable.SearchCharacterScreen
 import com.snappfood.interview.viewmodel.CharacterDetailViewModel
 import com.snappfood.interview.viewmodel.SearchCharacterViewModel
 import java.net.URLEncoder
@@ -19,7 +19,7 @@ fun AppNavigation() {
         composable("search") {
             val searchCharacterViewModel: SearchCharacterViewModel = hiltViewModel()
 
-            SearchScreen(
+            SearchCharacterScreen(
                 viewModel = searchCharacterViewModel,
                 onCharacterSelected = { character ->
                     val encodedUrl =
