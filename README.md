@@ -16,10 +16,12 @@ This project implements a Star Wars character search app using Kotlin and Jetpac
 - **StateFlow** for reactive state management
 
 ### Architecture
-The project uses the MVVM architecture:
-- **UI Layer**: Composables handle the presentation logic.
-- **ViewModel**: Manages state and interacts with the repository.
-- **Repository**: Encapsulates API communication.
+
+The project is structured following Clean Architecture principles:
+
+- **Presentation Layer**: Contains UI components and ViewModels.
+- **Domain Laye**: Contains use cases and business logic.
+- **Data Layer**: Contains repositories and data sources.
 
 ### How to Run
 1. Clone the repository.
@@ -33,3 +35,5 @@ Data is fetched from the [SWAPI](https://swapi.dev/).
 ### Improvements
 - Enhanced error handling using a sealed class (`ApiResult`).
 - Loading states for better user experience.
+- Modularized codebase for better scalability and maintainability.
+- Added interfaces for use cases and repository to facilitate unit testing in the future.
