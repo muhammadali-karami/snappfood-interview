@@ -67,7 +67,12 @@ fun CharacterDetailScreen(viewModel: CharacterDetailViewModel, characterUrl: Str
                                 .height(1.dp),
                             color = Color.Black
                         )
-                        DetailRow(label = "Height", value = characterDetail.height)
+                        DetailRow(
+                            label = "Height",
+                            value = "${characterDetail.height}cm (${
+                                convertToFeetInches(characterDetail.height.toInt())
+                            })"
+                        )
                         DetailRow(label = "Mass", value = characterDetail.mass)
                         DetailRow(label = "Hair Color", value = characterDetail.hair_color)
                         DetailRow(label = "Skin Color", value = characterDetail.skin_color)
@@ -103,4 +108,11 @@ fun CharacterDetailScreen(viewModel: CharacterDetailViewModel, characterUrl: Str
             }
         }
     }
+}
+
+fun convertToFeetInches(cm: Int): String {
+    val totalInches = (cm * 0.393701).toInt()
+    val feet = totalInches / 12
+    val inches = totalInches % 12
+    return "$feet' $inches\""
 }
