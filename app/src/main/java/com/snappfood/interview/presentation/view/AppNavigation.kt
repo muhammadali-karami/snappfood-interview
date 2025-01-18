@@ -1,13 +1,12 @@
-package com.snappfood.interview.view
+package com.snappfood.interview.presentation.view
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.snappfood.interview.view.composable.SearchCharacterScreen
-import com.snappfood.interview.viewmodel.CharacterDetailViewModel
-import com.snappfood.interview.viewmodel.SearchCharacterViewModel
+import com.snappfood.interview.presentation.viewmodel.CharacterDetailViewModel
+import com.snappfood.interview.presentation.viewmodel.SearchCharactersViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -17,10 +16,10 @@ fun AppNavigation() {
 
     NavHost(navController = navController, startDestination = "search") {
         composable("search") {
-            val searchCharacterViewModel: SearchCharacterViewModel = hiltViewModel()
+            val searchCharactersViewModel: SearchCharactersViewModel = hiltViewModel()
 
             SearchCharacterScreen(
-                viewModel = searchCharacterViewModel,
+                viewModel = searchCharactersViewModel,
                 onCharacterSelected = { character ->
                     val encodedUrl =
                         URLEncoder.encode(character.url, StandardCharsets.UTF_8.toString())

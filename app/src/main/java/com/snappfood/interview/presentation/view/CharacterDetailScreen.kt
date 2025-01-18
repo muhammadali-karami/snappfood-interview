@@ -1,4 +1,4 @@
-package com.snappfood.interview.view
+package com.snappfood.interview.presentation.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,8 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.snappfood.interview.data.api.ApiResult
 import com.snappfood.interview.data.model.CharacterDetail
-import com.snappfood.interview.view.composable.DetailRow
-import com.snappfood.interview.viewmodel.CharacterDetailViewModel
+import com.snappfood.interview.presentation.view.composable.DetailRow
+import com.snappfood.interview.presentation.viewmodel.CharacterDetailViewModel
 
 @Composable
 fun CharacterDetailScreen(viewModel: CharacterDetailViewModel, characterUrl: String) {
@@ -93,9 +92,9 @@ fun CharacterDetailScreen(viewModel: CharacterDetailViewModel, characterUrl: Str
                 }
 
                 is ApiResult.Error -> {
-                    val errorMessage = (characterDetailState as ApiResult.Error).message
+                    val error = (characterDetailState as ApiResult.Error)
                     Text(
-                        "Error: $errorMessage",
+                        "${error.message}: ${error.cause}",
                         color = Color.Red,
                     )
                 }

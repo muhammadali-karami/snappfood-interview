@@ -1,4 +1,4 @@
-package com.snappfood.interview.view.composable
+package com.snappfood.interview.presentation.view.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

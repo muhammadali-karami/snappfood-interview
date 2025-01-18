@@ -1,10 +1,10 @@
-package com.snappfood.interview.viewmodel
+package com.snappfood.interview.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.snappfood.interview.data.api.ApiResult
-import com.snappfood.interview.data.model.CharacterDetail
-import com.snappfood.interview.data.repository.CharacterRepository
+import com.snappfood.interview.data.model.CharacterSearch
+import com.snappfood.interview.domain.SearchCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchCharacterViewModel @Inject constructor(private val repository: CharacterRepository) :
+class SearchCharactersViewModel @Inject constructor(private val searchCharactersUseCase: SearchCharactersUseCase) :
     ViewModel() {
-    private val _characters = MutableStateFlow<ApiResult<List<CharacterDetail>>>(ApiResult.Empty)
-    val characters: StateFlow<ApiResult<List<CharacterDetail>>> = _characters
+    private val _characters = MutableStateFlow<ApiResult<CharacterSearch>>(ApiResult.Empty)
+    val characters: StateFlow<ApiResult<CharacterSearch>> = _characters
 
     private var searchJob: Job? = null
 
@@ -36,7 +36,7 @@ class SearchCharacterViewModel @Inject constructor(private val repository: Chara
     private fun searchCharacter(query: String) {
         viewModelScope.launch {
             _characters.value = ApiResult.Loading
-            _characters.value = repository.searchCharacter(query)
+            _characters.value = searchCharactersUseCase.invoke(query)
         }
     }
 }

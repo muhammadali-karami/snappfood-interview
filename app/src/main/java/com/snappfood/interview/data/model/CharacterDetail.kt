@@ -16,5 +16,5 @@ data class CharacterDetail(
     val starships: List<String>,
     val created: String,
     val edited: String,
-    val url: String,
+    val url: String
 )

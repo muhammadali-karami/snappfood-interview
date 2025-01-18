@@ -1,4 +1,4 @@
-package com.snappfood.interview.view.composable
+package com.snappfood.interview.presentation.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,11 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.snappfood.interview.data.api.ApiResult
 import com.snappfood.interview.data.model.CharacterDetail
-import com.snappfood.interview.viewmodel.SearchCharacterViewModel
+import com.snappfood.interview.data.model.CharacterSearch
+import com.snappfood.interview.presentation.view.composable.CharacterRow
+import com.snappfood.interview.presentation.viewmodel.SearchCharactersViewModel
 
 @Composable
 fun SearchCharacterScreen(
-    viewModel: SearchCharacterViewModel, onCharacterSelected: (CharacterDetail) -> Unit
+    viewModel: SearchCharactersViewModel, onCharacterSelected: (CharacterDetail) -> Unit
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val charactersState by viewModel.characters.collectAsState()
@@ -36,14 +38,12 @@ fun SearchCharacterScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .padding(top = 16.dp),
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
         ) {
             TextField(modifier = Modifier.fillMaxWidth(), value = query, onValueChange = {
                 query = it
@@ -60,7 +60,7 @@ fun SearchCharacterScreen(
 
             is ApiResult.Success -> {
                 val characterList =
-                    (charactersState as ApiResult.Success<List<CharacterDetail>>).data
+                    (charactersState as ApiResult.Success<CharacterSearch>).data.results
                 if (characterList.isEmpty()) {
                     Text(
                         text = "No characters found. Try searching!",
@@ -77,8 +77,11 @@ fun SearchCharacterScreen(
             }
 
             is ApiResult.Error -> {
-                val errorMessage = (charactersState as ApiResult.Error).message
-                Text("Error: $errorMessage", color = Color.Red)
+                val error = (charactersState as ApiResult.Error)
+                Text(
+                    "${error.message}: ${error.cause}",
+                    color = Color.Red,
+                )
             }
 
             ApiResult.Empty -> Unit
