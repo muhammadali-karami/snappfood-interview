@@ -58,6 +58,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // LiveData & ViewModel
     implementation(libs.viewmodel.ktx)
@@ -74,7 +76,4 @@ dependencies {
     // DI (Hilt)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-
-    implementation("androidx.navigation:navigation-compose:2.8.5")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }
